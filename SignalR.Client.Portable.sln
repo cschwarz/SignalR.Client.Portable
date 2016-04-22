@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR.Client.Portable", "SignalR.Client.Portable\SignalR.Client.Portable.csproj", "{C1A0E7AF-DED0-42E7-8B49-3369C374CE0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR.Client.Portable", "src\SignalR.Client.Portable\SignalR.Client.Portable.csproj", "{C1A0E7AF-DED0-42E7-8B49-3369C374CE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR.Client.Portable.Tests", "SignalR.Client.Portable.Tests\SignalR.Client.Portable.Tests.csproj", "{A162B65F-C76C-4305-8EC9-A821FC88623D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR.Client.Portable.Tests", "tests\SignalR.Client.Portable.Tests\SignalR.Client.Portable.Tests.csproj", "{A162B65F-C76C-4305-8EC9-A821FC88623D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNet.SignalR.Client.Tests", "Microsoft.AspNet.SignalR.Client.Tests\Microsoft.AspNet.SignalR.Client.Tests.csproj", "{8C78D403-C8F9-43B2-8524-0C9BE010020E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNet.SignalR.Client.Tests", "tests\Microsoft.AspNet.SignalR.Client.Tests\Microsoft.AspNet.SignalR.Client.Tests.csproj", "{8C78D403-C8F9-43B2-8524-0C9BE010020E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BECA0FCB-1995-4A34-BC08-420354287699}"
 	ProjectSection(SolutionItems) = preProject
