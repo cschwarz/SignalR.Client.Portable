@@ -34,6 +34,13 @@ namespace SignalR.Client.Portable.Tests
             return string.Concat("Echo: ", value);
         }
 
+        public TestMessage EchoMessage(TestMessage message)
+        {
+            message.Value1 = string.Concat("Echo: ", message.Value1);
+            Clients.All.MessageCallback(message);
+            return message;
+        }
+
         public void InvokeClient(int value)
         {
             Clients.All.ClientCallback(value);

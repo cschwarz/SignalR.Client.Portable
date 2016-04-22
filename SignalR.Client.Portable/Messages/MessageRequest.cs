@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 
 namespace SignalR.Client.Portable
 {
@@ -10,11 +9,11 @@ namespace SignalR.Client.Portable
         [JsonProperty("I")]
         public string InvocationIdentifier { get; set; }
 
-        public MessageRequest(string hubName, string methodName, params string[] arguments)
+        public MessageRequest(string hubName, string methodName, params JToken[] arguments)
         {
             HubName = hubName;
             MethodName = methodName;
-            Arguments = arguments.Select(a => JToken.FromObject(a)).ToList();
+            Arguments = arguments;
             InvocationIdentifier = Guid.NewGuid().ToString();
         }
     }

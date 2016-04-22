@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 
 namespace SignalR.Client.Portable
 {
@@ -11,6 +10,6 @@ namespace SignalR.Client.Portable
         [JsonProperty("M")]
         public string MethodName { get; set; }
         [JsonProperty("A")]
-        public IList<JToken> Arguments { get; set; }
+        public JToken[] Arguments { get; set; }
     }
 }

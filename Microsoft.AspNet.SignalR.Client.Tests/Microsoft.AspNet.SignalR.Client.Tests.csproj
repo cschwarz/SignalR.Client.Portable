@@ -104,6 +104,9 @@
     <Compile Include="..\SignalR.Client.Portable.Tests\TestHub.cs">
       <Link>TestHub.cs</Link>
     </Compile>
+    <Compile Include="..\SignalR.Client.Portable.Tests\TestMessage.cs">
+      <Link>TestMessage.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebsocketConnection.cs" />
   </ItemGroup>

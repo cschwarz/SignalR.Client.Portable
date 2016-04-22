@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -26,14 +27,14 @@ namespace SignalR.Client.Portable
 
         public Task Invoke(string method, params object[] args)
         {
-            MessageRequest request = new MessageRequest(hubName, method, args.Select(a => a?.ToString()).ToArray());
+            MessageRequest request = new MessageRequest(hubName, method, args.Select(a => JToken.FromObject(a)).ToArray());
             connection.Send(JsonConvert.SerializeObject(request));
             return Task.FromResult<object>(null);
         }
 
         public Task<T> Invoke<T>(string method, params object[] args)
         {
-            MessageRequest request = new MessageRequest(hubName, method, args.Select(a => a?.ToString()).ToArray());
+            MessageRequest request = new MessageRequest(hubName, method, args.Select(a => JToken.FromObject(a)).ToArray());
 
             TaskCompletionSource<T> taskSource = new TaskCompletionSource<T>();
             MethodInfo setResultMethod = typeof(TaskCompletionSource<T>).GetRuntimeMethod("SetResult", new Type[] { typeof(T) });
@@ -52,7 +53,7 @@ namespace SignalR.Client.Portable
 
             if (!string.IsNullOrEmpty(response.InvocationIdentifier) && pendingRequests.TryGetValue(response.InvocationIdentifier, out pendingRequest))
             {
-                pendingRequest.SetResultMethod.Invoke(pendingRequest.Source, new object[] { Convert.ChangeType(response.Result, pendingRequest.ResultType) });
+                pendingRequest.SetResultMethod.Invoke(pendingRequest.Source, new object[] { response.Result.ToObject(pendingRequest.ResultType) });
             }
             else if (!string.IsNullOrEmpty(response.MessageId))
             {

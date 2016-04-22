@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SignalR.Client.Portable
 {
     public class MessageResponse
     {
         [JsonProperty("R")]
-        public string Result { get; set; }
+        public JToken Result { get; set; }
         [JsonProperty("I")]
         public string InvocationIdentifier { get; set; }
         [JsonProperty("C")]

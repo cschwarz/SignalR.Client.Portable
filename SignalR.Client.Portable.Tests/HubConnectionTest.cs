@@ -147,6 +147,30 @@ namespace SignalR.Client.Portable.Tests
         }
 
         [Fact]
+        public async void InvokeJsonMessage()
+        {
+            using (HubConnection connection = new HubConnection(BaseUrl))
+            {
+                IHubProxy hubProxy = connection.CreateHubProxy("TestHub");
+                await connection.Start();
+
+                ManualResetEvent resetEvent = new ManualResetEvent(false);
+                TestMessage callbackMessage = null;
+
+                hubProxy.On<TestMessage>("MessageCallback", m => { callbackMessage = m; resetEvent.Set(); });
+
+                TestMessage message = await hubProxy.Invoke<TestMessage>("EchoMessage", new TestMessage() { Value1 = "Value1", Value2 = 2 });
+
+                Assert.Equal("Echo: Value1", message.Value1);
+                Assert.Equal(2, message.Value2);
+
+                Assert.True(resetEvent.WaitOne(3000));
+                Assert.Equal("Echo: Value1", callbackMessage.Value1);
+                Assert.Equal(2, callbackMessage.Value2);
+            }
+        }
+
+        [Fact]
         public async void OnConnectedCalled()
         {
             ManualResetEvent resetEvent = new ManualResetEvent(false);
