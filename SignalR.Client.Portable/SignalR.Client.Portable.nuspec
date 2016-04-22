@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>SignalR.Client.Portable</id>
+    <version>$version$</version>
+    <title>SignalR.Client.Portable</title>
+    <authors>Christian Schwarz</authors>
+    <owners>Christian Schwarz</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SignalR.Client.Portable</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>SignalR.Client.Portable</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\SignalR.Client.Portable.dll" target="lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10"/>
+  </files>
+</package>
