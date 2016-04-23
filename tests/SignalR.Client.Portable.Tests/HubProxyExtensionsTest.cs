@@ -21,7 +21,7 @@ namespace SignalR.Client.Portable.Tests
 
                 hubProxy.On("ClientCallback", () => { resetEvent.Set(); });
 
-                await hubProxy.Invoke("InvokeClientCallback");
+                int temp = await hubProxy.Invoke<int>("InvokeClientCallback");
 
                 Assert.True(resetEvent.WaitOne(3000));
             }
@@ -41,7 +41,7 @@ namespace SignalR.Client.Portable.Tests
 
                 hubProxy.On<int>("ClientCallback", (v1) => { value1 = v1; resetEvent.Set(); });
 
-                await hubProxy.Invoke("InvokeClientCallback1", 1);
+                int temp = await hubProxy.Invoke<int>("InvokeClientCallback1", 1);
 
                 Assert.True(resetEvent.WaitOne(3000));
                 Assert.Equal(1, value1);
