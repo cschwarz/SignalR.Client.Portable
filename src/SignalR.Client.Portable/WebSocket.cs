@@ -57,7 +57,14 @@ namespace SignalR.Client.Portable
 
         private void OnError(string error)
         {
-            throw new Exception(error);
+            Exception exception = new Exception(error);
+
+            if (webSocketOpened != null)
+                webSocketOpened.SetException(exception);
+            else if (webSocketClosed != null)
+                webSocketClosed.SetException(exception);
+            else
+                throw exception;
         }
 
         private void OnMessage(string message)
