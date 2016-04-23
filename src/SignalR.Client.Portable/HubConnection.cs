@@ -87,6 +87,8 @@ namespace SignalR.Client.Portable
 
         public void Dispose()
         {
+            if (State != ConnectionState.Disconnected)
+                Stop();
         }
 
         private void MessageReceived(string message)
