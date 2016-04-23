@@ -41,9 +41,44 @@ namespace SignalR.Client.Portable.Tests
             return message;
         }
 
-        public void InvokeClient(int value)
+        public void InvokeClientCallback()
         {
-            Clients.All.ClientCallback(value);
+            Clients.All.ClientCallback();
+        }
+
+        public void InvokeClientCallback1(int value1)
+        {
+            Clients.All.ClientCallback(value1);
+        }
+
+        public void InvokeClientCallback2(int value1, int value2)
+        {
+            Clients.All.ClientCallback(value1, value2);
+        }
+
+        public void InvokeClientCallback3(int value1, int value2, int value3)
+        {
+            Clients.All.ClientCallback(value1, value2, value3);
+        }
+
+        public void InvokeClientCallback4(int value1, int value2, int value3, int value4)
+        {
+            Clients.All.ClientCallback(value1, value2, value3, value4);
+        }
+
+        public void InvokeClientCallback5(int value1, int value2, int value3, int value4, int value5)
+        {
+            Clients.All.ClientCallback(value1, value2, value3, value4, value5);
+        }
+
+        public void InvokeClientCallback6(int value1, int value2, int value3, int value4, int value5, int value6)
+        {
+            Clients.All.ClientCallback(value1, value2, value3, value4, value5, value6);
+        }
+
+        public void InvokeClientCallback7(int value1, int value2, int value3, int value4, int value5, int value6, int value7)
+        {
+            Clients.All.ClientCallback(value1, value2, value3, value4, value5, value6, value7);
         }
 
         public override Task OnConnected()

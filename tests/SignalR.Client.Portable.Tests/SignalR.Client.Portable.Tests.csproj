@@ -101,8 +101,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HubConnectionTest.cs" />
+    <Compile Include="HubProxyExtensionsTest.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="TestHub.cs" />
     <Compile Include="TestMessage.cs" />
   </ItemGroup>

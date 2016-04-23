@@ -98,8 +98,14 @@
     <Compile Include="..\SignalR.Client.Portable.Tests\HubConnectionTest.cs">
       <Link>HubConnectionTest.cs</Link>
     </Compile>
+    <Compile Include="..\SignalR.Client.Portable.Tests\HubProxyExtensionsTest.cs">
+      <Link>HubProxyExtensionsTest.cs</Link>
+    </Compile>
     <Compile Include="..\SignalR.Client.Portable.Tests\Startup.cs">
       <Link>Startup.cs</Link>
+    </Compile>
+    <Compile Include="..\SignalR.Client.Portable.Tests\TestBase.cs">
+      <Link>TestBase.cs</Link>
     </Compile>
     <Compile Include="..\SignalR.Client.Portable.Tests\TestHub.cs">
       <Link>TestHub.cs</Link>

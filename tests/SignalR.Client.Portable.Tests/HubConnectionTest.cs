@@ -1,9 +1,6 @@
-﻿using Microsoft.Owin.Hosting;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Websockets.Net;
 using Xunit;
 
 #if REFERENCE_IMPLEMENTATION
@@ -12,22 +9,8 @@ namespace Microsoft.AspNet.SignalR.Client.Tests
 namespace SignalR.Client.Portable.Tests
 #endif
 {
-    public class HubConnectionTest
+    public class HubConnectionTest : TestBase
     {
-#if REFERENCE_IMPLEMENTATION
-        private const string BaseUrl = "http://localhost:8080";
-#else
-        private const string BaseUrl = "http://localhost:8081";
-#endif
-
-        private static IDisposable webApp;
-
-        static HubConnectionTest()
-        {
-            WebsocketConnection.Link();
-            webApp = WebApp.Start<Startup>(BaseUrl);
-        }
-
         [Fact]
         public async void InvokeWithParameter()
         {
@@ -55,6 +38,43 @@ namespace SignalR.Client.Portable.Tests
                 await hubProxy.Invoke("NoParameters");
 
                 Assert.True(resetEvent.WaitOne(3000));
+            }
+        }
+
+        [Fact]
+        public async void InvokeJsonMessage()
+        {
+            using (HubConnection connection = new HubConnection(BaseUrl))
+            {
+                IHubProxy hubProxy = connection.CreateHubProxy("TestHub");
+                await connection.Start();
+
+                ManualResetEvent resetEvent = new ManualResetEvent(false);
+                TestMessage callbackMessage = null;
+
+                hubProxy.On<TestMessage>("MessageCallback", m => { callbackMessage = m; resetEvent.Set(); });
+
+                TestMessage message = await hubProxy.Invoke<TestMessage>("EchoMessage", new TestMessage() { Value1 = "Value1", Value2 = 2 });
+
+                Assert.Equal("Echo: Value1", message.Value1);
+                Assert.Equal(2, message.Value2);
+
+                Assert.True(resetEvent.WaitOne(3000));
+                Assert.Equal("Echo: Value1", callbackMessage.Value1);
+                Assert.Equal(2, callbackMessage.Value2);
+            }
+        }
+
+        [Fact]
+        public async void ConnectionIdProperty()
+        {
+            using (HubConnection connection = new HubConnection(BaseUrl))
+                Assert.Null(connection.ConnectionId);
+
+            using (HubConnection connection = new HubConnection(BaseUrl))
+            {
+                await connection.Start();
+                Assert.NotNull(connection.ConnectionId);
             }
         }
 
@@ -100,73 +120,6 @@ namespace SignalR.Client.Portable.Tests
 
                 Assert.True(resetEvent.WaitOne(3000));
                 Assert.True(TestHub.QueryString.Contains(new KeyValuePair<string, string>("a", "b")));
-            }
-        }
-
-        [Fact(Skip = "Flaky")]
-        public async void InvokeClientCallback()
-        {
-            using (HubConnection connection = new HubConnection(BaseUrl))
-            {
-                IHubProxy hubProxy = connection.CreateHubProxy("TestHub");
-                await connection.Start();
-
-                ManualResetEvent resetEvent = new ManualResetEvent(false);
-
-                int value = 0;
-
-                hubProxy.On<int>("ClientCallback", v => { value = v; resetEvent.Set(); });
-
-                await hubProxy.Invoke("InvokeClient", 5);
-
-                Assert.True(resetEvent.WaitOne(3000));
-                Assert.Equal(5, value);
-            }
-        }
-
-        [Fact]
-        public async void InvokeDisposedClientCallback()
-        {
-            using (HubConnection connection = new HubConnection(BaseUrl))
-            {
-                IHubProxy hubProxy = connection.CreateHubProxy("TestHub");
-                await connection.Start();
-
-                ManualResetEvent resetEvent = new ManualResetEvent(false);
-
-                int value = 0;
-
-                IDisposable callback = hubProxy.On<int>("ClientCallback", v => { value = v; resetEvent.Set(); });
-                callback.Dispose();
-
-                await hubProxy.Invoke("InvokeClient", 5);
-
-                Assert.False(resetEvent.WaitOne(1000));
-                Assert.Equal(0, value);
-            }
-        }
-
-        [Fact]
-        public async void InvokeJsonMessage()
-        {
-            using (HubConnection connection = new HubConnection(BaseUrl))
-            {
-                IHubProxy hubProxy = connection.CreateHubProxy("TestHub");
-                await connection.Start();
-
-                ManualResetEvent resetEvent = new ManualResetEvent(false);
-                TestMessage callbackMessage = null;
-
-                hubProxy.On<TestMessage>("MessageCallback", m => { callbackMessage = m; resetEvent.Set(); });
-
-                TestMessage message = await hubProxy.Invoke<TestMessage>("EchoMessage", new TestMessage() { Value1 = "Value1", Value2 = 2 });
-
-                Assert.Equal("Echo: Value1", message.Value1);
-                Assert.Equal(2, message.Value2);
-
-                Assert.True(resetEvent.WaitOne(3000));
-                Assert.Equal("Echo: Value1", callbackMessage.Value1);
-                Assert.Equal(2, callbackMessage.Value2);
             }
         }
 
