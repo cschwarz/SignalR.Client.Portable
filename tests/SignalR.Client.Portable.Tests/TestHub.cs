@@ -41,16 +41,14 @@ namespace SignalR.Client.Portable.Tests
             return message;
         }
 
-        public int InvokeClientCallback()
+        public void InvokeClientCallback()
         {
             Clients.All.ClientCallback();
-            return 0;
         }
 
-        public int InvokeClientCallback1(int value1)
+        public void InvokeClientCallback1(int value1)
         {
             Clients.All.ClientCallback(value1);
-            return 1;
         }
 
         public void InvokeClientCallback2(int value1, int value2)
