@@ -139,7 +139,7 @@ namespace SignalR.Client.Portable.Tests
             }
         }
 
-        [Fact(Skip = "Flaky")]
+        [Fact]
         public async void OnDisconnectedCalled()
         {
             ManualResetEvent resetEvent = new ManualResetEvent(false);

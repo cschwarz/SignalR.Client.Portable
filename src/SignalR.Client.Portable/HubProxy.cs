@@ -28,8 +28,15 @@ namespace SignalR.Client.Portable
         public Task Invoke(string method, params object[] args)
         {
             MessageRequest request = new MessageRequest(hubName, method, args.Select(a => JToken.FromObject(a)).ToArray());
+
+            TaskCompletionSource<object> taskSource = new TaskCompletionSource<object>();
+            MethodInfo setResultMethod = typeof(TaskCompletionSource<object>).GetRuntimeMethod("SetResult", new Type[] { typeof(object) });
+
+            if (!pendingRequests.TryAdd(request.InvocationIdentifier, new PendingRequest(taskSource, typeof(object), setResultMethod)))
+                throw new Exception();
+
             connection.Send(JsonConvert.SerializeObject(request));
-            return Task.FromResult<object>(null);
+            return taskSource.Task;
         }
 
         public Task<T> Invoke<T>(string method, params object[] args)
@@ -53,7 +60,7 @@ namespace SignalR.Client.Portable
 
             if (!string.IsNullOrEmpty(response.InvocationIdentifier) && pendingRequests.TryGetValue(response.InvocationIdentifier, out pendingRequest))
             {
-                pendingRequest.SetResultMethod.Invoke(pendingRequest.Source, new object[] { response.Result.ToObject(pendingRequest.ResultType) });
+                pendingRequest.SetResultMethod.Invoke(pendingRequest.Source, new object[] { response.Result?.ToObject(pendingRequest.ResultType) });
             }
             else if (!string.IsNullOrEmpty(response.MessageId))
             {
