@@ -4,7 +4,7 @@ using System;
 
 namespace SignalR.Client.Portable
 {
-    public class MessageRequest : Message
+    internal class MessageRequest : Message
     {
         [JsonProperty("I")]
         public string InvocationIdentifier { get; set; }

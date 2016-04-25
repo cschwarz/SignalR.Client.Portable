@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace SignalR.Client.Portable
 {
-    public class Message
+    internal class Message
     {
         [JsonProperty("H")]
         public string HubName { get; set; }

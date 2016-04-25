@@ -54,7 +54,12 @@ namespace SignalR.Client.Portable
             return taskSource.Task;
         }
 
-        public void MessageReceived(MessageResponse response)
+        public Subscription Subscribe(string eventName)
+        {
+            return subscriptions.GetOrAdd(eventName, e => new Subscription());
+        }
+
+        internal void MessageReceived(MessageResponse response)
         {
             PendingRequest pendingRequest = null;
 
@@ -71,11 +76,6 @@ namespace SignalR.Client.Portable
                         subscription.OnReceived(message.Arguments);
                 }
             }
-        }
-
-        public Subscription Subscribe(string eventName)
-        {
-            return subscriptions.GetOrAdd(eventName, e => new Subscription());
         }
     }
 }

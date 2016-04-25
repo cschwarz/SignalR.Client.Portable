@@ -1,6 +1,6 @@
 ﻿namespace SignalR.Client.Portable
 {
-    public class ConnectionData
+    internal class ConnectionData
     {
         public string Name { get; set; }
     }
