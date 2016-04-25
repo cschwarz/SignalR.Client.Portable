@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		version.txt = version.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{18BF593F-E10B-4E62-8F4C-912E1B3A28F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F067207A-CDD9-4152-8051-2260CD4106EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +42,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C1A0E7AF-DED0-42E7-8B49-3369C374CE0B} = {18BF593F-E10B-4E62-8F4C-912E1B3A28F5}
+		{A162B65F-C76C-4305-8EC9-A821FC88623D} = {F067207A-CDD9-4152-8051-2260CD4106EB}
+		{8C78D403-C8F9-43B2-8524-0C9BE010020E} = {F067207A-CDD9-4152-8051-2260CD4106EB}
 	EndGlobalSection
 EndGlobal
