@@ -8,8 +8,8 @@ namespace SignalR.Client.Portable.Tests
         [Fact]
         public async void ConnectToInvalidUri_ShouldThrowException()
         {
-            WebSocket webSocket = new WebSocket();
-            await Assert.ThrowsAsync<Exception>(() => webSocket.Open("InvalidUrl"));
+            using (WebSocket webSocket = new WebSocket())
+                await Assert.ThrowsAsync<Exception>(() => webSocket.Open("InvalidUrl"));
         }
     }
 }

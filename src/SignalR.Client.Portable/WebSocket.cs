@@ -4,7 +4,7 @@ using Websockets;
 
 namespace SignalR.Client.Portable
 {
-    public class WebSocket
+    public class WebSocket : IDisposable
     {
         public event Action<string> MessageReceived;
 
@@ -20,6 +20,16 @@ namespace SignalR.Client.Portable
             connection.OnClosed += OnClosed;
             connection.OnError += OnError;
             connection.OnMessage += OnMessage;
+        }
+
+        public void Dispose()
+        {
+            connection.OnOpened -= OnOpened;
+            connection.OnClosed -= OnClosed;
+            connection.OnError -= OnError;
+            connection.OnMessage -= OnMessage;
+
+            connection.Dispose();
         }
 
         public async Task Open(string url)

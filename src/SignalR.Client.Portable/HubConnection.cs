@@ -89,6 +89,9 @@ namespace SignalR.Client.Portable
         {
             if (State != ConnectionState.Disconnected)
                 Stop();
+
+            webSocket.MessageReceived -= MessageReceived;
+            webSocket.Dispose();
         }
 
         private void MessageReceived(string message)
