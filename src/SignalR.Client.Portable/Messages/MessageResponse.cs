@@ -12,6 +12,6 @@ namespace SignalR.Client.Portable
         [JsonProperty("C")]
         public string MessageId { get; set; }
         [JsonProperty("M")]
-        public Message[] Messages { get; set; }
+        public JToken[] Messages { get; set; }
     }
 }

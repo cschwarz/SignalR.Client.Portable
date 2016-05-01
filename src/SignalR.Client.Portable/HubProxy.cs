@@ -69,7 +69,7 @@ namespace SignalR.Client.Portable
             }
             else if (!string.IsNullOrEmpty(response.MessageId))
             {
-                foreach (Message message in response.Messages)
+                foreach (Message message in response.Messages.Select(m => m.ToObject<Message>()))
                 {
                     Subscription subscription = null;
                     if (message.HubName == hubName && subscriptions.TryGetValue(message.MethodName, out subscription))

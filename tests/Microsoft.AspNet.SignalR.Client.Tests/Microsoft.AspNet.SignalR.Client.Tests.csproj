@@ -95,6 +95,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SignalR.Client.Portable.Tests\ConnectionTest.cs">
+      <Link>ConnectionTest.cs</Link>
+    </Compile>
     <Compile Include="..\SignalR.Client.Portable.Tests\HubConnectionTest.cs">
       <Link>HubConnectionTest.cs</Link>
     </Compile>
@@ -112,6 +115,9 @@
     </Compile>
     <Compile Include="..\SignalR.Client.Portable.Tests\TestMessage.cs">
       <Link>TestMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\SignalR.Client.Portable.Tests\TestPersistentConnection.cs">
+      <Link>TestPersistentConnection.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebsocketConnection.cs" />
