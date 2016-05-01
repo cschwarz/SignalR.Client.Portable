@@ -7,9 +7,10 @@
     <authors>Christian Schwarz</authors>
     <owners>Christian Schwarz</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>SignalR.Client.Portable</description>
+    <description>A portable SignalR client with websocket support.</description>
     <copyright>Copyright 2016</copyright>
-    <tags>SignalR.Client.Portable</tags>
+    <tags>SignalR WebSocket PCL Portable Xamarin</tags>
+    <projectUrl>https://github.com/cschwarz/SignalR.Client.Portable</projectUrl>    
   </metadata>
   <files>
     <file src="bin\Release\SignalR.Client.Portable.dll" target="lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10"/>
