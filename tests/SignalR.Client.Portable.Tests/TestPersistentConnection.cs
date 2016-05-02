@@ -11,7 +11,7 @@ namespace SignalR.Client.Portable.Tests
     {
         protected override Task OnReceived(IRequest request, string connectionId, string data)
         {
-            return Task.Delay(10).ContinueWith(t => Connection.Broadcast(string.Format("{0}: {1}", connectionId, data)));            
+            return Task.Delay(1000).ContinueWith(t => Connection.Broadcast(string.Format("{0}: {1}", connectionId, data)));            
         }
     }
 }
