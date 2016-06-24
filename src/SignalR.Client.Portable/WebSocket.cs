@@ -7,6 +7,8 @@ namespace SignalR.Client.Portable
     public class WebSocket : IDisposable
     {
         public event Action<string> MessageReceived;
+        public event Action Opened;
+        public event Action Closed;        
 
         private IWebSocketConnection connection;
 
@@ -59,12 +61,16 @@ namespace SignalR.Client.Portable
         {
             if (webSocketOpened != null)
                 webSocketOpened.SetResult(true);
+
+            Opened?.Invoke();
         }
 
         private void OnClosed()
         {
             if (webSocketClosed != null)
                 webSocketClosed.SetResult(true);
+
+            Closed?.Invoke();
         }
 
         private void OnError(string error)
