@@ -9,7 +9,7 @@ namespace SignalR.Client.Portable.Tests
 {
     public class ConnectionTest : TestBase
     {
-        [Fact]
+        [Fact(Skip = "Flaky")]
         public async void Send()
         {
             using (Connection connection = new Connection(BaseUrl + "/test"))
