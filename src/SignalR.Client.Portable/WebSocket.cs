@@ -57,12 +57,14 @@ namespace SignalR.Client.Portable
 
         private void OnOpened()
         {
-            webSocketOpened.SetResult(true);
+            if (webSocketOpened != null)
+                webSocketOpened.SetResult(true);
         }
 
         private void OnClosed()
         {
-            webSocketClosed.SetResult(true);
+            if (webSocketClosed != null)
+                webSocketClosed.SetResult(true);
         }
 
         private void OnError(string error)
