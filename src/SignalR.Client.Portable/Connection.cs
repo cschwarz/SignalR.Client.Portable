@@ -117,46 +117,74 @@ namespace SignalR.Client.Portable
 
         private async Task Negotiate()
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                string negotiateUrl = string.Format("{0}negotiate?{1}", Url, await NegotiateQueryString("1.4", GetConnectionData()));
+                using (HttpClient client = new HttpClient())
+                {
+                    string negotiateUrl = string.Format("{0}negotiate?{1}", Url, await NegotiateQueryString("1.4", GetConnectionData()));
 
-                NegotiateResponse response = JsonConvert.DeserializeObject<NegotiateResponse>(await client.GetStringAsync(negotiateUrl));
+                    NegotiateResponse response = JsonConvert.DeserializeObject<NegotiateResponse>(await client.GetStringAsync(negotiateUrl));
 
-                ConnectionToken = response.ConnectionToken;
-                ConnectionId = response.ConnectionId;
+                    ConnectionToken = response.ConnectionToken;
+                    ConnectionId = response.ConnectionId;
+                }
+            }
+            catch (Exception e)
+            {
+                Error?.Invoke(e);
             }
         }
 
         private async Task Connect()
         {
-            string connectQueryString = await ConnectQueryString("1.4", GetConnectionData(), ConnectionToken);
+            try
+            {
+                string connectQueryString = await ConnectQueryString("1.4", GetConnectionData(), ConnectionToken);
 
-            if (!string.IsNullOrEmpty(QueryString))
-                connectQueryString += "&" + QueryString;
+                if (!string.IsNullOrEmpty(QueryString))
+                    connectQueryString += "&" + QueryString;
 
-            await webSocket.Open(string.Format("{0}connect?{1}", Url, connectQueryString));
+                await webSocket.Open(string.Format("{0}connect?{1}", Url, connectQueryString));
+            }
+            catch (Exception e)
+            {
+                Error?.Invoke(e);
+            }
         }
 
         private async Task StartConnection()
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                string startQueryString = await ConnectQueryString("1.4", GetConnectionData(), ConnectionToken);
-                string startUrl = string.Format("{0}start?{1}", Url, startQueryString);
+                using (HttpClient client = new HttpClient())
+                {
+                    string startQueryString = await ConnectQueryString("1.4", GetConnectionData(), ConnectionToken);
+                    string startUrl = string.Format("{0}start?{1}", Url, startQueryString);
 
-                await client.GetStringAsync(startUrl);
+                    await client.GetStringAsync(startUrl);
+                }
+            }
+            catch (Exception e)
+            {
+                Error?.Invoke(e);
             }
         }
 
         private async Task Abort()
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                string abortQueryString = await ConnectQueryString("1.4", GetConnectionData(), ConnectionToken);
-                string abortUrl = string.Format("{0}abort?{1}", Url, abortQueryString);
+                using (HttpClient client = new HttpClient())
+                {
+                    string abortQueryString = await ConnectQueryString("1.4", GetConnectionData(), ConnectionToken);
+                    string abortUrl = string.Format("{0}abort?{1}", Url, abortQueryString);
 
-                await client.GetStringAsync(abortUrl);
+                    await client.GetStringAsync(abortUrl);
+                }
+            }
+            catch (Exception e)
+            {
+                Error?.Invoke(e);
             }
         }
 
