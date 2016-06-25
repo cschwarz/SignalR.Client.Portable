@@ -16,6 +16,8 @@ namespace SignalR.Client.Portable
         public string Url { get; private set; }
 
         public event Action<string> Received;
+        public event Action Closed;
+        public event Action<Exception> Error;
 
         private WebSocket webSocket;
 
@@ -39,6 +41,8 @@ namespace SignalR.Client.Portable
             Url += "signalr/";
 
             webSocket = new WebSocket();
+            webSocket.Opened += WebSocketOpened;
+            webSocket.Closed += WebSocketClosed;
             webSocket.MessageReceived += MessageReceived;
 
             State = ConnectionState.Disconnected;
@@ -54,8 +58,6 @@ namespace SignalR.Client.Portable
             await Connect();
 
             await StartConnection();
-
-            State = ConnectionState.Connected;
         }
 
         public async void Stop()
@@ -63,8 +65,6 @@ namespace SignalR.Client.Portable
             await webSocket.Close();
 
             await Abort();
-
-            State = ConnectionState.Disconnected;
         }
 
         public Task Send(string message)
@@ -79,8 +79,27 @@ namespace SignalR.Client.Portable
             if (State != ConnectionState.Disconnected)
                 Stop();
 
+            webSocket.Opened -= WebSocketOpened;
+            webSocket.Closed -= WebSocketClosed;
             webSocket.MessageReceived -= MessageReceived;
             webSocket.Dispose();
+        }
+
+        private void WebSocketOpened()
+        {
+            State = ConnectionState.Connected;
+        }
+
+        private void WebSocketClosed()
+        {
+            State = ConnectionState.Disconnected;
+
+            OnClosed();
+        }
+        
+        protected virtual void OnClosed()
+        {
+            Closed?.Invoke();
         }
 
         private void MessageReceived(string message)
