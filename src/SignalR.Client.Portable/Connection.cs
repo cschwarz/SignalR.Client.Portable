@@ -18,6 +18,7 @@ namespace SignalR.Client.Portable
         public event Action<string> Received;
         public event Action Closed;
         public event Action<Exception> Error;
+        public event Action<StateChange> StateChanged;
 
         private WebSocket webSocket;
 
@@ -51,7 +52,10 @@ namespace SignalR.Client.Portable
 
         public async Task Start()
         {
-            State = ConnectionState.Connecting;
+            if (State == ConnectionState.Connecting || State == ConnectionState.Connected)
+                return;
+
+            ChangeState(ConnectionState.Connecting);
 
             await Negotiate();
 
@@ -87,12 +91,12 @@ namespace SignalR.Client.Portable
 
         private void WebSocketOpened()
         {
-            State = ConnectionState.Connected;
+            ChangeState(ConnectionState.Connected);
         }
 
         private void WebSocketClosed()
         {
-            State = ConnectionState.Disconnected;
+            ChangeState(ConnectionState.Disconnected);
 
             OnClosed();
         }
@@ -115,6 +119,16 @@ namespace SignalR.Client.Portable
                 Received?.Invoke(message.ToObject<string>());
         }
 
+        private void ChangeState(ConnectionState newState)
+        {
+            if (State == newState)
+                return;
+
+            StateChanged?.Invoke(new StateChange(State, newState));
+
+            State = newState;
+        }
+
         private async Task Negotiate()
         {
             try
@@ -132,6 +146,8 @@ namespace SignalR.Client.Portable
             catch (Exception e)
             {
                 Error?.Invoke(e);
+
+                ChangeState(ConnectionState.Disconnected);
             }
         }
 
@@ -149,6 +165,8 @@ namespace SignalR.Client.Portable
             catch (Exception e)
             {
                 Error?.Invoke(e);
+
+                ChangeState(ConnectionState.Disconnected);
             }
         }
 
@@ -167,6 +185,8 @@ namespace SignalR.Client.Portable
             catch (Exception e)
             {
                 Error?.Invoke(e);
+
+                ChangeState(ConnectionState.Disconnected);
             }
         }
 
@@ -185,6 +205,8 @@ namespace SignalR.Client.Portable
             catch (Exception e)
             {
                 Error?.Invoke(e);
+
+                ChangeState(ConnectionState.Disconnected);
             }
         }
 
