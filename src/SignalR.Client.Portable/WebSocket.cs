@@ -8,7 +8,8 @@ namespace SignalR.Client.Portable
     {
         public event Action<string> MessageReceived;
         public event Action Opened;
-        public event Action Closed;        
+        public event Action Closed;
+        public event Action<string> Error;
 
         private IWebSocketConnection connection;
 
@@ -36,20 +37,34 @@ namespace SignalR.Client.Portable
 
         public async Task Open(string url)
         {
-            webSocketOpened = new TaskCompletionSource<bool>();
+            try
+            {
+                webSocketOpened = new TaskCompletionSource<bool>();
 
-            connection.Open(url);
+                connection.Open(url);
 
-            await webSocketOpened.Task;
+                await webSocketOpened.Task;
+            }
+            finally
+            {
+                webSocketOpened = null;
+            }
         }
 
         public async Task Close()
         {
-            webSocketClosed = new TaskCompletionSource<bool>();
+            try
+            {
+                webSocketClosed = new TaskCompletionSource<bool>();
 
-            connection.Close();
+                connection.Close();
 
-            await webSocketClosed.Task;
+                await webSocketClosed.Task;
+            }
+            finally
+            {
+                webSocketClosed = null;
+            }
         }
 
         public void Send(string message)
@@ -78,11 +93,11 @@ namespace SignalR.Client.Portable
             Exception exception = new Exception(error);
 
             if (webSocketOpened != null)
-                webSocketOpened.SetException(exception);
+                webSocketOpened.TrySetException(exception);
             else if (webSocketClosed != null)
-                webSocketClosed.SetException(exception);
-            else
-                throw exception;
+                webSocketClosed.TrySetException(exception);
+
+            Error?.Invoke(error);
         }
 
         private void OnMessage(string message)

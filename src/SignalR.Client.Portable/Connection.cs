@@ -45,6 +45,7 @@ namespace SignalR.Client.Portable
             webSocket.Opened += WebSocketOpened;
             webSocket.Closed += WebSocketClosed;
             webSocket.MessageReceived += MessageReceived;
+            webSocket.Error += WebSocketError;
 
             State = ConnectionState.Disconnected;
             QueryString = queryString;
@@ -86,6 +87,7 @@ namespace SignalR.Client.Portable
             webSocket.Opened -= WebSocketOpened;
             webSocket.Closed -= WebSocketClosed;
             webSocket.MessageReceived -= MessageReceived;
+            webSocket.Error -= WebSocketError;
             webSocket.Dispose();
         }
 
@@ -111,6 +113,11 @@ namespace SignalR.Client.Portable
             MessageResponse response = JsonConvert.DeserializeObject<MessageResponse>(message);
 
             MessageReceived(response);
+        }
+
+        private void WebSocketError(string error)
+        {
+            Error?.Invoke(new Exception(error));
         }
 
         internal virtual void MessageReceived(MessageResponse response)
